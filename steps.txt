@@ -1,0 +1,9 @@
+#celery command for starting workers
+celery -A django_celery_project worker --loglevel=info -P solo
+
+#celery beat command
+celery -A django_celery_project.celery beat -l debug
+celery -A django_celery_project.celery flower --url_prefix=flower -E --loglevel=info
+
+# kill all pending tasks (tasks waiting in queue)
+celery -A django_celery_project purge
