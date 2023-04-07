@@ -54,7 +54,6 @@ def product_add(request):
 
 @api_view(['GET'])
 def user_product_list(request):
-    print("insidde user_product_list api")
     print(request)
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -70,5 +69,17 @@ def product_edit(request):
     
 @api_view(['DELETE'])
 def product_delete(request):
-    pass
+    if request.method == 'DELETE':
+        if request.user.is_authenticated:
+            print(request.data)
+            id = request.data['id']
+            product = Product.objects.filter(id=id)
+            if product:
+                product.delete()
+                return Response({'data': f'Product {id} deleted'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'data': f'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+            
+        return Response({'error': 'User is not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
