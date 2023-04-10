@@ -51,10 +51,35 @@ class PriceScraper:
 
 		return curr_price
 
+	def get_name(self):
+		soup = self.get_soup()
+		name = ""
+		if self.website == 'amazon':
+			spans = soup.find_all('span', {'class': 'a-size-large product-title-word-break'}) 
+			lines = [span.get_text() for span in spans]
+			if len(lines) != 0:
+				name = lines[0]
+			else:
+				logger.info("Name not found, recheck the url provided")
+
+		elif self.website == 'flipkart':
+			name = soup.find('div', attrs={'class': 'B_NuCI'})
+			if name is None:
+				logger.info("Name not found, recheck the url provided")
+			else:
+				name = name.text 
+				logger.info(name)
+		else:
+			logger.info("Error!")
+
+		return name
+
 	def start(self):
 		price = self.get_price()
+		name = self.get_name()
 		try:
 			self.product.price = price
+			self.product.title = name
 			self.product.save()
 		except:
 			logger.info(f'Error!!, price:{price}')
