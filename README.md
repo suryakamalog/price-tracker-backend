@@ -1,4 +1,4 @@
-Backend: https://github.com/suryakamalog/price-tracker-frontend
+Frontend: https://github.com/suryakamalog/price-tracker-frontend
 # Price Tracker
 
 Track Amazon, Flipkart product prices and get notified in real time via email. 
